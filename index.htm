@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Impressive UI with Welcome</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- Welcome Page -->
+  <div class="welcome-screen">
+    <h1 class="welcome-title">Welcome to <span>SmartDoc AI</span></h1>
+    <p class="welcome-subtitle">Your Intelligent Document Chat Assistant</p>
+  </div>
+
+  <!-- Main UI (Hidden Initially) -->
+  <div class="app" style="display: none;">
+    <!-- Navbar -->
+    <div class="navbar">
+      <div class="nav-title animated-heading">SmartDoc AI</div>
+      <button id="sidebarToggle">☰</button>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <h3>Menu</h3>
+      <ul>
+        <li>Dashboard</li>
+        <li>Uploads</li>
+        <li>Settings</li>
+      </ul>
+    </div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+
+    <!-- Chat Area -->
+    <div class="main-container">
+      <div class="chat-box" id="chatBox">
+        <!-- Chat will appear here -->
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-area">
+      <div class="upload-wrapper">
+        <button class="upload-icon" id="uploadToggle">📁</button>
+        <div class="upload-menu" id="uploadMenu">
+          <label for="pdfUpload">📄 PDF</label>
+          <label for="jsonUpload">🗂️ JSON</label>
+          <label for="emailUpload">✉️ Email</label>
+        </div>
+        <input type="file" id="pdfUpload" accept=".pdf" hidden />
+        <input type="file" id="jsonUpload" accept=".json" hidden />
+        <input type="file" id="emailUpload" accept=".eml,.msg" hidden />
+      </div>
+      <textarea placeholder="Type your message..." id="userInput"></textarea>
+      <button class="send-icon" id="sendBtn">➤</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
