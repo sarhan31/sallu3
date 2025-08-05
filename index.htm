@@ -17,10 +17,18 @@
   <!-- Main UI (Hidden Initially) -->
   <div class="app" style="display: none;">
     <!-- Navbar -->
-    <div class="navbar">
-      <div class="nav-title animated-heading">LLM Nexus</div>
-      <button id="sidebarToggle">☰</button>
-    </div>
+   <nav class="navbar">
+  <button id="sidebarToggle" class="sidebar-btn">
+    ☰
+  </button>
+
+  <h1 class="navbar-title">🔮 LLM Insight</h1>
+
+  <button class="download-btn">
+    ⬇️ Download Chat
+  </button>
+</nav>
+
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
@@ -36,6 +44,13 @@
 
     <!-- Chat Area -->
     <div class="main-container">
+        <div class="checkpoint-bar" id="checkpointBar">
+  <div class="checkpoint active" id="cp-upload">📁 Upload</div>
+  <div class="checkpoint" id="cp-processing">⚙️ Processing</div>
+  <div class="checkpoint" id="cp-chat">💬 Chat</div>
+  <div class="checkpoint" id="cp-response">🧠 Response</div>
+</div>
+
       <div class="chat-box" id="chatBox">
         <!-- Chat will appear here -->
       </div>

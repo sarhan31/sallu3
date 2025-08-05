@@ -15,25 +15,9 @@ window.addEventListener('DOMContentLoaded', () => {
 // Sidebar toggle
 const sidebarToggle = document.getElementById('sidebarToggle');
 const sidebar = document.querySelector('.sidebar');
-const sidebarOverlay = document.getElementById('sidebarOverlay');
-
 sidebarToggle.addEventListener('click', () => {
   sidebar.classList.toggle('show');
-  sidebarOverlay.classList.toggle('show');
 });
-
-// Close sidebar when clicking outside (overlay)
-sidebarOverlay.addEventListener('click', () => {
-  sidebar.classList.remove('show');
-  sidebarOverlay.classList.remove('show');
-});
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    sidebar.classList.remove('show');
-    sidebarOverlay.classList.remove('show');
-  }
-});
-
 
 // Upload menu toggle
 const uploadToggle = document.getElementById('uploadToggle');
@@ -87,3 +71,41 @@ document.getElementById('jsonUpload').addEventListener('change', (e) => {
 document.getElementById('emailUpload').addEventListener('change', (e) => {
   appendMessage('user', `✉️ Uploaded Email: ${e.target.files[0]?.name}`);
 });
+//file upload listeners overlay
+const sidebarOverlay = document.querySelector('.sidebar-overlay');
+uploadwrrapper.addEventListener('click', () => {
+  uploadwrrapper.classList.remove('show');
+  uploadwrrapper.classList.remove('show');
+});
+
+// Sidebar overlay
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    sidebar.classList.remove('show');
+    sidebarOverlay.classList.remove('show');
+  }
+});
+function setCheckpoint(stage) {
+  const stages = ['cp-upload', 'cp-processing', 'cp-chat', 'cp-response'];
+  stages.forEach(id => {
+    const cp = document.getElementById(id);
+    if (cp) {
+      cp.classList.remove('active');
+    }
+  });
+
+  const active = document.getElementById(stage);
+  if (active) {
+    active.classList.add('active');
+  }
+}
+
+
+// Close upload menu when pressing Esc key
+document.addEventListener("keydown", function (event) {
+  const uploadMenu = document.getElementById("uploadMenu");
+  if (event.key === "Escape") {
+    uploadMenu.classList.remove("active");
+  }
+});
+
