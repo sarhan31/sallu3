@@ -159,10 +159,11 @@ body.sidebar-open {
 }
 
 .chat-box {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  padding-bottom: 80px; /* space for input-area */
+  overflow-y: auto;
+  height: calc(100vh - 60px - 80px); /* 60px = navbar height, adjust if needed */
 }
+
 
 .chat-bubble {
   max-width: 70%;
@@ -336,15 +337,21 @@ textarea {
 
 
 
-//* === GLOBAL INPUT AREA FLEX === */
+/* === GLOBAL INPUT AREA FLEX === */
 .input-area {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #111; /* keep your existing color if different */
+  z-index: 100;
+  padding: 10px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 10px;
-  padding: 10px;
-  flex-wrap: nowrap;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.2);
 }
+
 
 .input-area textarea {
   flex: 1;
@@ -479,6 +486,23 @@ textarea {
 
   .input-area {
     gap: 10px;
+  }
+}
+@media (max-width: 480px) {
+  .input-area {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+  }
+
+  .input-area textarea {
+    font-size: 14px;
+    padding: 8px;
+    flex: 1;
+  }
+
+  .upload-wrapper,
+  .send-icon {
+    flex-shrink: 0;
   }
 }
 
