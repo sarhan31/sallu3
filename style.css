@@ -113,18 +113,20 @@ body {
 /* Sidebar */
 .sidebar {
   position: fixed;
-  left: -250px;
+  left: -260px;
   top: 0;
-  height: 100%;
+  height: 100vh;
   width: 250px;
   background: #111827;
   padding: 20px;
   transition: left 0.3s ease-in-out;
+   transform: translateX(-100%); /* fully hide off-screen */
   z-index: 1000;
 }
 
 .sidebar.show {
   left: 0;
+   transform: translateX(0); /* show on-screen */
 }
 
 /* Overlay for small screens */
@@ -132,24 +134,22 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   background: rgba(0, 0, 0, 0.6);
   display: none;
-  z-index: 999;
+  z-index: 1000;
 }
 
-.sidebar-overlay.show {
+.sidebar-overlay.active{
   display: block;
+}
+body.sidebar-open {
+  overflow: hidden;
 }
 
 /* Adjustments for small screens */
-@media screen and (max-width: 768px) {
-  .sidebar {
-    width: 80%;
-    max-width: 300px;
-  }
-}
+
 
 
 /* Chatbox */
@@ -334,16 +334,153 @@ textarea {
   box-shadow: 0 0 10px rgba(26, 115, 232, 0.6);
 }
 
-@media (max-width: 600px) {
-  .checkpoint-bar {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
+
+
+//* === GLOBAL INPUT AREA FLEX === */
+.input-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px;
+  flex-wrap: nowrap;
+}
+
+.input-area textarea {
+  flex: 1;
+  min-height: 38px;
+  font-size: 14px;
+  padding: 8px;
+  resize: none;
+}
+
+.upload-wrapper,
+.send-icon {
+  flex-shrink: 0;
+}
+
+
+/* === SMALL PHONES (Up to 480px) === */
+@media screen and (max-width: 480px) {
+  .navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    position: relative;
   }
 
-  .checkpoint {
-    width: 100%;
-    font-size: 0.85rem;
+  .nav-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  #sidebarToggle {
+    font-size: 20px;
+  }
+
+  .download-btn {
+    font-size: 11px;
+    padding: 6px 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .sidebar {
+    width: 100vw;
+    height: 100vh;
+    padding: 20px;
+  }
+
+  .chat-box {
+    height: calc(100vh - 160px);
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .chat-bubble {
+    font-size: 13px;
+    max-width: 85%;
+  }
+
+  .input-area {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 6px;
+  }
+
+  .upload-wrapper button,
+  .send-icon {
+    font-size: 18px;
+    padding: 8px;
   }
 }
+
+
+/* === MEDIUM PHONES / TABLETS (481px to 768px) === */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .navbar {
+    padding: 10px 16px;
+    position: relative;
+  }
+
+  .nav-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .download-btn {
+    font-size: 10px;
+    padding: 6px 12px;
+  }
+
+  .chat-box {
+    font-size: 15px;
+  }
+
+  .input-area {
+    gap: 8px;
+  }
+}
+
+
+/* === TABLETS / LARGE PHONES (769px to 1024px) === */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .navbar {
+    padding: 12px 20px;
+  }
+
+  .nav-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 22px;
+  }
+
+  .download-btn {
+    font-size: 10px;
+    padding: 8px 14px;
+  }
+
+  .chat-box {
+    font-size: 16px;
+  }
+
+  .input-area {
+    gap: 10px;
+  }
+}
+
+
 
