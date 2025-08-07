@@ -126,9 +126,7 @@ if ('webkitSpeechRecognition' in window) {
     const transcript = event.results[0][0].transcript;
     userInput.value += transcript + " ";
   };
-   recognition.onend = () => {
-    voiceBtn.innerHTML = `<i class="fas fa-microphone"></i>`;
-  };
+   
 
 
   recognition.onerror = (event) => {
