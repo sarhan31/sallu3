@@ -127,7 +127,7 @@ if ('webkitSpeechRecognition' in window) {
     userInput.value += transcript + " ";
   };
    recognition.onend = () => {
-    voiceBtn.innerHTML = '🎙️';
+    voiceBtn.innerHTML = 'Speak';
   };
 
 
