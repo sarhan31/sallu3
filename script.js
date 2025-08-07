@@ -109,3 +109,42 @@ function setCheckpoint(stage) {
   const active = document.getElementById(stage);
   if (active) active.classList.add('active');
 }
+const voiceBtn = document.getElementById('voiceBtn');
+
+if ('webkitSpeechRecognition' in window) {
+  const recognition = new webkitSpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.lang = 'en-US';
+
+  voiceBtn.addEventListener('click', () => {
+    recognition.start();
+  });
+
+  recognition.onresult = (event) => {
+    const transcript = event.results[0][0].transcript;
+    textarea.value = transcript;
+  };
+
+  recognition.onerror = (event) => {
+    console.error('Voice recognition error:', event.error);
+  };
+} else {
+  voiceBtn.disabled = true;
+  voiceBtn.title = "Voice input not supported";
+}
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  const chatBubbles = document.querySelectorAll('.chat-bubble');
+  let chatText = '';
+
+  chatBubbles.forEach(bubble => {
+    const sender = bubble.classList.contains('user') ? 'You' : 'Bot';
+    chatText += `${sender}: ${bubble.textContent.trim()}\n`;
+  });
+
+  const blob = new Blob([chatText], { type: 'text/plain' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'chat_history.txt';
+  link.click();
+});
