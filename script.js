@@ -126,7 +126,9 @@ if ('webkitSpeechRecognition' in window) {
     const transcript = event.results[0][0].transcript;
     userInput.value += transcript + " ";
   };
-   
+   recognition.onend = () => {
+    voiceBtn.innerHTML = `<i id="voiceBtn"></i>`;
+  };
 
 
   recognition.onerror = (event) => {
