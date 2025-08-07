@@ -98,17 +98,7 @@ document.getElementById('emailUpload')?.addEventListener('change', (e) => {
   appendMessage('user', `✉️ Uploaded Email: ${e.target.files[0]?.name}`);
 });
 
-// Checkpoint logic
-function setCheckpoint(stage) {
-  const stages = ['cp-upload', 'cp-processing', 'cp-chat', 'cp-response'];
-  stages.forEach(id => {
-    const cp = document.getElementById(id);
-    if (cp) cp.classList.remove('active');
-  });
 
-  const active = document.getElementById(stage);
-  if (active) active.classList.add('active');
-}
 const voiceBtn = document.getElementById('voiceBtn');
 
 if ('webkitSpeechRecognition' in window) {
@@ -155,4 +145,40 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
   link.download = 'chat_history.txt';
   link.click();
 });
+
+
+// Make sure this code runs after the DOM is fully loaded
+document.addEventListener("DOMContentLoaded", () => {
+  const newChatBtn = document.getElementById("new-chat-btn");
+  const chatBox = document.getElementById("chatBox");
+  const userInput = document.getElementById("userInput");
+
+  if (newChatBtn && chatBox && userInput) {
+    newChatBtn.addEventListener("click", () => {
+      // Clear the chat area completely
+      chatBox.innerHTML = "";
+
+      // Clear the user input box
+      userInput.value = "";
+
+      // Optional: Add a system message to indicate a new chat
+      const systemMsg = document.createElement("div");
+      systemMsg.classList.add("system-message");
+      systemMsg.innerText = "🆕 New chat started.";
+      chatBox.appendChild(systemMsg);
+    });
+  }
+});
+
+ // NEW CHAT FUNCTIONALITY
+// NEW CHAT FUNCTIONALITY
+
+
+
+
+
+
+
+
+
 
