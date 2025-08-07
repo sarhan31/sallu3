@@ -118,20 +118,27 @@ if ('webkitSpeechRecognition' in window) {
   recognition.lang = 'en-US';
 
   voiceBtn.addEventListener('click', () => {
+    voiceBtn.innerHTML = 'Listening...';
     recognition.start();
   });
 
   recognition.onresult = (event) => {
     const transcript = event.results[0][0].transcript;
-    textarea.value = transcript;
+    userInput.value += transcript + " ";
   };
+   recognition.onend = () => {
+    voiceBtn.innerHTML = 'Speak';
+  };
+
 
   recognition.onerror = (event) => {
     console.error('Voice recognition error:', event.error);
+    voiceBtn.innerHTML = 'Error';
   };
 } else {
   voiceBtn.disabled = true;
   voiceBtn.title = "Voice input not supported";
+  voiceBtn.innerHTML = 'Voice input not supported';
 }
 document.getElementById('downloadBtn').addEventListener('click', () => {
   const chatBubbles = document.querySelectorAll('.chat-bubble');
@@ -148,3 +155,4 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
   link.download = 'chat_history.txt';
   link.click();
 });
+
