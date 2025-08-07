@@ -12,32 +12,6 @@ window.addEventListener('DOMContentLoaded', () => {
   }, 3500); // Show welcome for 3.5s
 });
 
-// Sidebar toggle logic
-const sidebarToggle = document.getElementById('sidebarToggle');
-const sidebar = document.querySelector('.sidebar');
-const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-sidebarToggle?.addEventListener('click', () => {
-  sidebar.classList.toggle('show');
-  sidebarOverlay.classList.toggle('active');
-  document.body.classList.toggle('sidebar-open');
-});
-
-sidebarOverlay?.addEventListener('click', () => {
-  sidebar.classList.remove('show');
-  sidebarOverlay.classList.remove('active');
-  document.body.classList.remove('sidebar-open');
-});
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') {
-    sidebar.classList.remove('show');
-    sidebarOverlay.classList.remove('active');
-    document.body.classList.remove('sidebar-open');
-    uploadMenu?.classList.remove('show');
-  }
-});
-
 // Upload menu toggle
 const uploadToggle = document.getElementById('uploadToggle');
 const uploadMenu = document.getElementById('uploadMenu');
@@ -58,14 +32,43 @@ const sendBtn = document.getElementById('sendBtn');
 const chatBox = document.getElementById('chatBox');
 const textarea = document.getElementById('userInput');
 
-sendBtn?.addEventListener('click', () => {
+sendBtn?.addEventListener('click', async () => {
   const text = textarea.value.trim();
-  if (text) {
-    appendMessage('user', text);
-    textarea.value = '';
-    setTimeout(() => {
-      appendMessage('bot', 'Processing your query...');
-    }, 600);
+  if (!text) return;
+
+  appendMessage('user', text);
+  textarea.value = '';
+
+  const loadingMsg = document.createElement('div');
+  loadingMsg.className = 'chat-bubble bot';
+  loadingMsg.textContent = 'Thinking...';
+  chatBox.appendChild(loadingMsg);
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  try {
+    const response = await fetch("https://backend-8c4t.onrender.com/hackrx/run", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer 9da8aafea3dc4af423a86e812d47c130c9d39985a93d5f6574705dbf192d0209"
+      },
+      body: JSON.stringify({
+        documents: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",  // or dynamic
+        questions: [text]
+      })
+    });
+
+    const data = await response.json();
+    chatBox.removeChild(loadingMsg);
+
+    if (response.ok && data.answers?.[0]) {
+      appendMessage('bot', `🤖 ${data.answers[0]}`);
+    } else {
+      appendMessage('bot', `❌ Error: ${data.detail || data.error}`);
+    }
+  } catch (error) {
+    chatBox.removeChild(loadingMsg);
+    appendMessage('bot', `❌ Exception: ${error.message}`);
   }
 });
 
@@ -89,16 +92,14 @@ function appendMessage(sender, text) {
 document.getElementById('pdfUpload')?.addEventListener('change', (e) => {
   appendMessage('user', `📄 Uploaded PDF: ${e.target.files[0]?.name}`);
 });
-
 document.getElementById('jsonUpload')?.addEventListener('change', (e) => {
-  appendMessage('user', `🗂️ Uploaded JSON: ${e.target.files[0]?.name}`);
+  appendMessage('user', `🗂 Uploaded JSON: ${e.target.files[0]?.name}`);
 });
-
 document.getElementById('emailUpload')?.addEventListener('change', (e) => {
-  appendMessage('user', `✉️ Uploaded Email: ${e.target.files[0]?.name}`);
+  appendMessage('user', `✉ Uploaded Email: ${e.target.files[0]?.name}`);
 });
 
-
+// Voice input
 const voiceBtn = document.getElementById('voiceBtn');
 
 if ('webkitSpeechRecognition' in window) {
@@ -108,29 +109,31 @@ if ('webkitSpeechRecognition' in window) {
   recognition.lang = 'en-US';
 
   voiceBtn.addEventListener('click', () => {
-    voiceBtn.innerHTML = 'Listening...';
+    voiceBtn.innerHTML = '🎤 Listening...';
     recognition.start();
   });
 
   recognition.onresult = (event) => {
     const transcript = event.results[0][0].transcript;
-    userInput.value += transcript + " ";
+    textarea.value += transcript + " ";
   };
-   recognition.onend = () => {
+
+  recognition.onend = () => {
     voiceBtn.innerHTML = `<i class="fas fa-microphone"></i>`;
   };
 
-
   recognition.onerror = (event) => {
     console.error('Voice recognition error:', event.error);
-    voiceBtn.innerHTML = 'Error';
+    voiceBtn.innerHTML = 'Voice error';
   };
 } else {
   voiceBtn.disabled = true;
   voiceBtn.title = "Voice input not supported";
   voiceBtn.innerHTML = 'Voice input not supported';
 }
-document.getElementById('downloadBtn').addEventListener('click', () => {
+
+// Download button logic
+document.getElementById('downloadBtn')?.addEventListener('click', () => {
   const chatBubbles = document.querySelectorAll('.chat-bubble');
   let chatText = '';
 
@@ -146,22 +149,15 @@ document.getElementById('downloadBtn').addEventListener('click', () => {
   link.click();
 });
 
-
-// Make sure this code runs after the DOM is fully loaded
+// New chat functionality from navbar
 document.addEventListener("DOMContentLoaded", () => {
   const newChatBtn = document.getElementById("new-chat-btn");
-  const chatBox = document.getElementById("chatBox");
-  const userInput = document.getElementById("userInput");
 
-  if (newChatBtn && chatBox && userInput) {
+  if (newChatBtn && chatBox && textarea) {
     newChatBtn.addEventListener("click", () => {
-      // Clear the chat area completely
       chatBox.innerHTML = "";
+      textarea.value = "";
 
-      // Clear the user input box
-      userInput.value = "";
-
-      // Optional: Add a system message to indicate a new chat
       const systemMsg = document.createElement("div");
       systemMsg.classList.add("system-message");
       systemMsg.innerText = "🆕 New chat started.";
@@ -169,16 +165,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
- // NEW CHAT FUNCTIONALITY
-// NEW CHAT FUNCTIONALITY
-
-
-
-
-
-
-
-
-
-
